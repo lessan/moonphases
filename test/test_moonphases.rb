@@ -81,4 +81,31 @@ class MoonPhasesTest < Test::Unit::TestCase
     assert_equal 2002, (moon.getNASAYearBlob 2002).content[/-?\d+/].to_i
     assert_equal 13, (moon.separateNASADataLines 2002).length
   end
+  
+  def test_document_log
+    moon = MoonPhases.new
+    
+    # Get a document, and make sure an item is added to the log.
+    assert_not_nil moon.getNASAYearBlob 1977
+    assert_equal 1, moon.getDocumentLogLength
+
+    # Get another doc, and make sure another item is added to the log.
+    moon.getNASAYearBlob 2011
+    assert_not_nil assert_equal 2, moon.getDocumentLogLength
+
+    #Make sure that the log contains what we think it should.    
+    assert_equal moon.lookupURL( 2011 ), moon.getDocumentLogItem( 1 )
+    assert_equal moon.lookupURL( 1977 ), moon.getDocumentLogItem( 0 )
+    
+    # Get a blob we've gotten before, and make sure that
+    # the log DOESN'T grow (because we went to the cache).
+    assert_not_nil  moon.getNASAYearBlob 1977
+    assert_equal 2, moon.getDocumentLogLength
+    
+    # Get a blob from the year after that one (1977 & 1978) 
+    # should be in the same NASA page, and make sure that the
+    # log doesn't grow.
+    assert_not_nil moon.getNASAYearBlob 1978
+    assert_equal 2, moon.getDocumentLogLength
+  end
 end
