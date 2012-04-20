@@ -80,6 +80,11 @@ class MoonPhasesTest < Test::Unit::TestCase
     moon = MoonPhases.new
     assert_equal 2002, (moon.getNASAYearBlob 2002).content[/-?\d+/].to_i
     assert_equal 13, (moon.separateNASADataLines 2002).length
+    
+    #Now let's see if we're actually parsing good data.
+    moonData = moon.getNASAData( 2002 )
+    assert_equal 49, moonData.getNumDataPoints
+    assert_equal 2002, moonData.getYear
   end
   
   def test_document_log

@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'open-uri'
+require 'moonphases/moon_data'
 
 class MoonPhases
   def initialize
@@ -21,6 +22,10 @@ class MoonPhases
   
   def getDocumentLogLength
     @documentLog.length
+  end
+  
+  def getNASAData( year )
+    MoonData.new separateNASADataLines( year )
   end
   
   def separateNASADataLines( year )
