@@ -4,7 +4,7 @@ require 'open-uri'
 class MoonPhases
   def initialize
     @documentLog = Array.new  
-    @blobCache = Hash.new
+    @documentCache = Hash.new
   end
   
   def getDocumentLogItem( item )
@@ -12,11 +12,7 @@ class MoonPhases
   end
   
   def getNASAYearBlob( year )
-    doc = @blobCache[ year ]
-    if doc.nil?
-      doc = getNASADoc year
-      @blobCache[ year ] = doc
-    end
+    doc = getNASADoc year
     if !doc.nil?
       return findYearIn doc, year
     end
@@ -60,8 +56,13 @@ class MoonPhases
   
   def getNASADoc( year )
     url = lookupURL( year )
-    @documentLog << url
-    Nokogiri::HTML( open( url ))
+    document = @documentCache[ url ]
+    if document.nil?
+      @documentLog << url
+      document = Nokogiri::HTML( open( url ))
+      @documentCache[ url ] = document  
+    end
+    document
   end
   
   def lookupURL( year )
