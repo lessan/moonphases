@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'moonphases'
+require 'date'
 
 class MoonPhasesTest < Test::Unit::TestCase
   def test_AD_Years
@@ -85,7 +86,26 @@ class MoonPhasesTest < Test::Unit::TestCase
     moonData = moon.getNASAData( 2002 )
     assert_equal 49, moonData.getNumDataPoints
     assert_equal 2002, moonData.getYear
+    
+    parsedDate = moonData.parseDate( "Jan 12 23:46" )
+    assert_equal 2002, parsedDate.year
+    assert_equal 1, parsedDate.mon
+    assert_equal 12, parsedDate.mday
+    
+    assert_equal 1, moonData.parseDate( "Jan 10  12:03" ).mon     
+    assert_equal 2, moonData.parseDate( "    Feb  8  22:28     " ).mon   
+    assert_equal 3, moonData.parseDate( "    Mar 25  20:58     " ).mon   
+    assert_equal 4, moonData.parseDate( "    Apr  2  00:50    " ).mon   
+    assert_equal 5, moonData.parseDate( "    May  1  06:24    " ).mon   
+    assert_equal 6, moonData.parseDate( "    Jun 15  01:22     " ).mon   
+    assert_equal 7, moonData.parseDate( "    Jul  6  12:03    " ).mon   
+    assert_equal 8, moonData.parseDate( "     Aug 19  17:53" ).mon        
+    assert_equal 9, moonData.parseDate( "   Sep  3  18:45     " ).mon   
+    assert_equal 10, moonData.parseDate( " Oct 25  01:17    " ).mon   
+    assert_equal 11, moonData.parseDate( " Nov  2  01:25    " ).mon   
+    assert_equal 12, moonData.parseDate( "Dec 31  03:12  " ).mon   
   end
+  
   
   def test_document_log
     moon = MoonPhases.new
