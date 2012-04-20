@@ -13,7 +13,7 @@ class MoonPhases
   def self.findYearIn( nasaDoc, year )
     nasaDoc.css( 'pre.indent' ).each do |pre|
       pre.children.each do |child|
-        firstNumber = child.content[/\d+/]
+        firstNumber = child.content[/-?\d+/]
         if !firstNumber.nil?
           if firstNumber.to_i == year
             return child

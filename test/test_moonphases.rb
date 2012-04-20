@@ -50,11 +50,24 @@ class MoonPhasesTest < Test::Unit::TestCase
       doc = MoonPhases.getNASADoc 2012
       assert_not_nil MoonPhases.findYearIn doc, 2012
       assert_nil MoonPhases.findYearIn doc, 1999    
+
+      # Some AD Years      
+      assert_equal 2015, (MoonPhases.getNASAYearBlob 2015).content[/-?\d+/].to_i
+      assert_equal 9, (MoonPhases.getNASAYearBlob 9).content[/-?\d+/].to_i
+      assert_equal 567, (MoonPhases.getNASAYearBlob 567).content[/-?\d+/].to_i
+      assert_equal 1620, (MoonPhases.getNASAYearBlob 1620).content[/-?\d+/].to_i
       
-      assert_equal 2015, (MoonPhases.getNASAYearBlob 2015).content[/\d+/].to_i
-      assert_equal 9, (MoonPhases.getNASAYearBlob 9).content[/\d+/].to_i
-      assert_equal 567, (MoonPhases.getNASAYearBlob 567).content[/\d+/].to_i
-      assert_equal 1620, (MoonPhases.getNASAYearBlob 1620).content[/\d+/].to_i
+      # OOH!  Year 0!
+      assert_equal 0, (MoonPhases.getNASAYearBlob 0).content[/-?\d+/].to_i
       
+      # How about some BC Years?
+      assert_equal -1, (MoonPhases.getNASAYearBlob -1).content[/-?\d+/].to_i
+      assert_equal -980, (MoonPhases.getNASAYearBlob -980).content[/-?\d+/].to_i
+      assert_equal -38, (MoonPhases.getNASAYearBlob -38).content[/-?\d+/].to_i
+      
+      # These are the earliest and latest years for which NASA publishes data.
+      assert_equal -1999, (MoonPhases.getNASAYearBlob -1999).content[/-?\d+/].to_i
+      assert_equal 4000, (MoonPhases.getNASAYearBlob 4000).content[/-?\d+/].to_i
+
   end
 end
