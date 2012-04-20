@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'moonphases'
+require 'date'
 
 class MoonPhasesTest < Test::Unit::TestCase
   def test_AD_Years
@@ -85,7 +86,224 @@ class MoonPhasesTest < Test::Unit::TestCase
     moonData = moon.getNASAData( 2002 )
     assert_equal 49, moonData.getNumDataPoints
     assert_equal 2002, moonData.getYear
+    
+    parsedDate = moonData.parseDate( "Jan 12 23:46" )
+    assert_equal 2002, parsedDate.year
+    assert_equal 1, parsedDate.mon
+    assert_equal 12, parsedDate.mday
+    
+    assert_equal 1, moonData.parseDate( "Jan 10  12:03" ).mon     
+    assert_equal 2, moonData.parseDate( "    Feb  8  22:28     " ).mon   
+    assert_equal 3, moonData.parseDate( "    Mar 25  20:58     " ).mon   
+    assert_equal 4, moonData.parseDate( "    Apr  2  00:50    " ).mon   
+    assert_equal 5, moonData.parseDate( "    May  1  06:24    " ).mon   
+    assert_equal 6, moonData.parseDate( "    Jun 15  01:22     " ).mon   
+    assert_equal 7, moonData.parseDate( "    Jul  6  12:03    " ).mon   
+    assert_equal 8, moonData.parseDate( "     Aug 19  17:53" ).mon        
+    assert_equal 9, moonData.parseDate( "   Sep  3  18:45     " ).mon   
+    assert_equal 10, moonData.parseDate( " Oct 25  01:17    " ).mon   
+    assert_equal 11, moonData.parseDate( " Nov  2  01:25    " ).mon   
+    assert_equal 12, moonData.parseDate( "Dec 31  03:12  " ).mon
+    
+    # Let's see if the dates were parsed right for 2002
+    assert_equal 1, moonData.getDataPoint( 0 ).mon
+    assert_equal 6, moonData.getDataPoint( 0 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 0 ).year 
+
+    assert_equal 1, moonData.getDataPoint( 1 ).mon
+    assert_equal 13, moonData.getDataPoint( 1 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 1 ).year 
+
+    assert_equal 1, moonData.getDataPoint( 2 ).mon
+    assert_equal 21, moonData.getDataPoint( 2 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 2 ).year 
+
+    assert_equal 1, moonData.getDataPoint( 3 ).mon
+    assert_equal 28, moonData.getDataPoint( 3 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 3 ).year 
+
+    assert_equal 2, moonData.getDataPoint( 4 ).mon
+    assert_equal 4, moonData.getDataPoint( 4 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 4 ).year 
+
+    assert_equal 2, moonData.getDataPoint( 5 ).mon
+    assert_equal 12, moonData.getDataPoint( 5 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 5 ).year 
+
+    assert_equal 2, moonData.getDataPoint( 6 ).mon
+    assert_equal 20, moonData.getDataPoint( 6 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 6 ).year 
+
+    assert_equal 2, moonData.getDataPoint( 7 ).mon
+    assert_equal 27, moonData.getDataPoint( 7 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 7 ).year 
+
+    assert_equal 3, moonData.getDataPoint( 8 ).mon
+    assert_equal 6, moonData.getDataPoint( 8 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 8 ).year 
+
+    assert_equal 3, moonData.getDataPoint( 9 ).mon
+    assert_equal 14, moonData.getDataPoint( 9 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 9 ).year 
+
+    assert_equal 3, moonData.getDataPoint( 10 ).mon
+    assert_equal 22, moonData.getDataPoint( 10 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 10 ).year 
+
+    assert_equal 3, moonData.getDataPoint( 11 ).mon
+    assert_equal 28, moonData.getDataPoint( 11 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 11 ).year 
+
+    assert_equal 4, moonData.getDataPoint( 12 ).mon
+    assert_equal 4, moonData.getDataPoint( 12 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 12 ).year 
+
+    assert_equal 4, moonData.getDataPoint( 13 ).mon
+    assert_equal 12, moonData.getDataPoint( 13 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 13 ).year 
+
+    assert_equal 4, moonData.getDataPoint( 14 ).mon
+    assert_equal 20, moonData.getDataPoint( 14 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 14 ).year 
+
+    assert_equal 4, moonData.getDataPoint( 15 ).mon
+    assert_equal 27, moonData.getDataPoint( 15 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 15 ).year 
+
+    assert_equal 5, moonData.getDataPoint( 16 ).mon
+    assert_equal 4, moonData.getDataPoint( 16 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 16 ).year 
+
+    assert_equal 5, moonData.getDataPoint( 17 ).mon
+    assert_equal 12, moonData.getDataPoint( 17 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 17 ).year 
+
+    assert_equal 5, moonData.getDataPoint( 18 ).mon
+    assert_equal 19, moonData.getDataPoint( 18 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 18 ).year 
+
+    assert_equal 5, moonData.getDataPoint( 19 ).mon
+    assert_equal 26, moonData.getDataPoint( 19 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 19 ).year 
+
+    assert_equal 6, moonData.getDataPoint( 20 ).mon
+    assert_equal 3, moonData.getDataPoint( 20 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 20 ).year 
+
+    assert_equal 6, moonData.getDataPoint( 21 ).mon
+    assert_equal 10, moonData.getDataPoint( 21 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 21 ).year 
+
+    assert_equal 6, moonData.getDataPoint( 22 ).mon
+    assert_equal 18, moonData.getDataPoint( 22 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 22 ).year 
+
+    assert_equal 6, moonData.getDataPoint( 23 ).mon
+    assert_equal 24, moonData.getDataPoint( 23 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 23 ).year 
+
+    assert_equal 7, moonData.getDataPoint( 24 ).mon
+    assert_equal 2, moonData.getDataPoint( 24 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 24 ).year 
+
+    assert_equal 7, moonData.getDataPoint( 25 ).mon
+    assert_equal 10, moonData.getDataPoint( 25 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 25 ).year 
+
+    assert_equal 7, moonData.getDataPoint( 26 ).mon
+    assert_equal 17, moonData.getDataPoint( 26 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 26 ).year 
+
+    assert_equal 7, moonData.getDataPoint( 27 ).mon
+    assert_equal 24, moonData.getDataPoint( 27 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 27 ).year 
+
+    assert_equal 8, moonData.getDataPoint( 28 ).mon
+    assert_equal 1, moonData.getDataPoint( 28 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 28 ).year 
+
+    assert_equal 8, moonData.getDataPoint( 29 ).mon
+    assert_equal 8, moonData.getDataPoint( 29 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 29 ).year 
+
+    assert_equal 8, moonData.getDataPoint( 30 ).mon
+    assert_equal 15, moonData.getDataPoint( 30 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 30 ).year 
+
+    assert_equal 8, moonData.getDataPoint( 31 ).mon
+    assert_equal 22, moonData.getDataPoint( 31 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 31 ).year 
+
+    assert_equal 8, moonData.getDataPoint( 32 ).mon
+    assert_equal 31, moonData.getDataPoint( 32 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 32 ).year 
+
+    assert_equal 9, moonData.getDataPoint( 33 ).mon
+    assert_equal 7, moonData.getDataPoint( 33 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 33 ).year 
+
+    assert_equal 9, moonData.getDataPoint( 34 ).mon
+    assert_equal 13, moonData.getDataPoint( 34 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 34 ).year 
+
+    assert_equal 9, moonData.getDataPoint( 35 ).mon
+    assert_equal 21, moonData.getDataPoint( 35 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 35 ).year 
+
+    assert_equal 9, moonData.getDataPoint( 36 ).mon
+    assert_equal 29, moonData.getDataPoint( 36 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 36 ).year 
+
+    assert_equal 10, moonData.getDataPoint( 37 ).mon
+    assert_equal 6, moonData.getDataPoint( 37 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 37 ).year 
+
+    assert_equal 10, moonData.getDataPoint( 38 ).mon
+    assert_equal 13, moonData.getDataPoint( 38 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 38 ).year 
+
+    assert_equal 10, moonData.getDataPoint( 39 ).mon
+    assert_equal 21, moonData.getDataPoint( 39 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 39 ).year 
+
+    assert_equal 10, moonData.getDataPoint( 40 ).mon
+    assert_equal 29, moonData.getDataPoint( 40 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 40 ).year 
+
+    assert_equal 11, moonData.getDataPoint( 41 ).mon
+    assert_equal 4, moonData.getDataPoint( 41 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 41 ).year 
+
+    assert_equal 11, moonData.getDataPoint( 42 ).mon
+    assert_equal 11, moonData.getDataPoint( 42 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 42 ).year 
+
+    assert_equal 11, moonData.getDataPoint( 43 ).mon
+    assert_equal 20, moonData.getDataPoint( 43 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 43 ).year 
+
+    assert_equal 11, moonData.getDataPoint( 44 ).mon
+    assert_equal 27, moonData.getDataPoint( 44 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 44 ).year 
+
+    assert_equal 12, moonData.getDataPoint( 45 ).mon
+    assert_equal 4, moonData.getDataPoint( 45 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 45 ).year 
+
+    assert_equal 12, moonData.getDataPoint( 46 ).mon
+    assert_equal 11, moonData.getDataPoint( 46 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 46 ).year 
+
+    assert_equal 12, moonData.getDataPoint( 47 ).mon
+    assert_equal 19, moonData.getDataPoint( 47 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 47 ).year 
+
+    assert_equal 12, moonData.getDataPoint( 48 ).mon
+    assert_equal 27, moonData.getDataPoint( 48 ).mday  
+    assert_equal 2002, moonData.getDataPoint( 48 ).year 
+
   end
+  
   
   def test_document_log
     moon = MoonPhases.new
