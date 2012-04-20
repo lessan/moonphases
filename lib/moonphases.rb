@@ -10,6 +10,23 @@ class MoonPhases
     nil
   end
   
+  def self.separateNASADataLines( year )
+    dataLines = Array.new
+    # Remove blank lines and stupid OSX return characters.
+    data = (getNASAYearBlob year).content
+    data.scan(/([^\r]*)/).each do |line|
+      if line[0].length > 0
+        dataLines << line[0]
+      end
+    end
+    #puts data.scan(/^(-?\d+)?(\s*)(([A-Za-z]{3}\s+\d+\s+\d+:\d+\s+[TAHPtpn]?\s*){1,4})(\d\dh\d\dm)?\s*$/).inspect
+    #(getNASAYearBlob year).content.scan(/^(-?\d+)?( *)(([A-Za-z]{3} +\d+ +\d+:\d+ +[TAHPtpn]? *){1,4})(\d\dh\d\dm)? *$/).each do |lineMatches|
+    #  puts lineMatches[2]
+    #  dataLines << lineMatches[2]
+    #end
+    dataLines
+  end
+  
   def self.findYearIn( nasaDoc, year )
     nasaDoc.css( 'pre.indent' ).each do |pre|
       pre.children.each do |child|

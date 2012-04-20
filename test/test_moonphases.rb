@@ -46,7 +46,7 @@ class MoonPhasesTest < Test::Unit::TestCase
     end
   end
   
-  def test_parse_year_blobs
+  def test_find_year_blobs
       doc = MoonPhases.getNASADoc 2012
       assert_not_nil MoonPhases.findYearIn doc, 2012
       assert_nil MoonPhases.findYearIn doc, 1999    
@@ -69,5 +69,10 @@ class MoonPhasesTest < Test::Unit::TestCase
       assert_equal -1999, (MoonPhases.getNASAYearBlob -1999).content[/-?\d+/].to_i
       assert_equal 4000, (MoonPhases.getNASAYearBlob 4000).content[/-?\d+/].to_i
 
+  end
+  
+  def test_parse_blob_data
+    assert_equal 2002, (MoonPhases.getNASAYearBlob 2002).content[/-?\d+/].to_i
+    assert_equal 13, (MoonPhases.separateNASADataLines 2002).length
   end
 end
