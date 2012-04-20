@@ -4,14 +4,24 @@ class MoonPhases
   end
   
   def self.paddedString( value )
-    if value < 10
-      "000" + value.to_s
-    elsif value < 100
-      "00" + value.to_s
-    elsif value < 1000
-      "0" + value.to_s
+    if value > 0
+      if value < 10
+        "000" + value.to_s
+      elsif value < 100
+        "00" + value.to_s
+      elsif value < 1000
+        "0" + value.to_s
+      else
+        value.to_s
+      end
     else
-      value.to_s
+      if value < -999
+        value.to_s
+      elsif value < -99
+        "-0" + (-value).to_s
+      else
+        "-00" + (-value).to_s
+      end
     end
   end
 end
