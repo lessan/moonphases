@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 
 class MoonPhases
-  def self.getNASAYearBlob( year )
+  def getNASAYearBlob( year )
     doc = getNASADoc year
     if !doc.nil?
       return findYearIn doc, year
@@ -10,7 +10,7 @@ class MoonPhases
     nil
   end
   
-  def self.separateNASADataLines( year )
+  def separateNASADataLines( year )
     dataLines = Array.new
     # Remove blank lines and stupid OSX return characters.
     data = (getNASAYearBlob year).content
@@ -27,7 +27,7 @@ class MoonPhases
     dataLines
   end
   
-  def self.findYearIn( nasaDoc, year )
+  def findYearIn( nasaDoc, year )
     nasaDoc.css( 'pre.indent' ).each do |pre|
       pre.children.each do |child|
         firstNumber = child.content[/-?\d+/]
@@ -41,15 +41,15 @@ class MoonPhases
     nil
   end
   
-  def self.getNASADoc( year )
+  def getNASADoc( year )
     Nokogiri::HTML( open( lookupURL( year )))
   end
   
-  def self.lookupURL( year )
+  def lookupURL( year )
     "http://eclipse.gsfc.nasa.gov/phase/phases" + paddedString( (( year - 1 )/ 100 ) * 100 + 1 ) + ".html"
   end
   
-  def self.paddedString( value )
+  def paddedString( value )
     if value > 0
       if value < 10
         "000" + value.to_s
