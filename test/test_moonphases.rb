@@ -28,11 +28,23 @@ class MoonPhasesTest < Test::Unit::TestCase
     assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-1099.html", MoonPhases.lookupURL( -1099 )
   end
   
-
   def test_padding
     assert_equal "0001", MoonPhases.paddedString( 1 )
     assert_equal "0010", MoonPhases.paddedString( 10 )
     assert_equal "0100", MoonPhases.paddedString( 100 )
     assert_equal "1000", MoonPhases.paddedString( 1000 )
+  end
+  
+  def test_get_data
+    assert_raise OpenURI::HTTPError do
+      MoonPhases.getNASADoc( 50000 )
+    end
+    
+    assert_nothing_raised OpenURI::HTTPError do
+      MoonPhases.getNASADoc( 2012 )
+    end
+    
+    doc = MoonPhases.getNASADoc 2012
+    assert_equal "NASA - Moon Phases:  2001 to  2100", doc.title
   end
 end

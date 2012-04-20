@@ -5,5 +5,6 @@ Gem::Specification.new do |s|
   s.description = "Recovers the phase of the moon for various historical dates."
   s.authors     = ["Curtis Lacy"]
   s.email       = 'curtis.lacy@grgcomponents.com'
-  s.files       = Dir["{app,lib,config,test}/**/*" + "Rakefile"]
+  s.files       = Dir["{app,lib,config,test}/**/*" + "Rakefile,Gemfile"]
+  s.add_runtime_dependency "nokogiri"
 end

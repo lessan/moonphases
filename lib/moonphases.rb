@@ -1,4 +1,11 @@
+require 'nokogiri'
+require 'open-uri'
+
 class MoonPhases
+  def self.getNASADoc( year )
+    Nokogiri::HTML( open( lookupURL( year )))
+  end
+  
   def self.lookupURL( year )
     "http://eclipse.gsfc.nasa.gov/phase/phases" + paddedString( (( year - 1 )/ 100 ) * 100 + 1 ) + ".html"
   end
