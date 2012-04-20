@@ -41,10 +41,20 @@ class MoonPhasesTest < Test::Unit::TestCase
     end
     
     assert_nothing_raised OpenURI::HTTPError do
-      MoonPhases.getNASADoc( 2012 )
+      doc = MoonPhases.getNASADoc 2012
+      assert_equal "NASA - Moon Phases:  2001 to  2100", doc.title
     end
-    
-    doc = MoonPhases.getNASADoc 2012
-    assert_equal "NASA - Moon Phases:  2001 to  2100", doc.title
+  end
+  
+  def test_parse_year_blobs
+      doc = MoonPhases.getNASADoc 2012
+      assert_not_nil MoonPhases.findYearIn doc, 2012
+      assert_nil MoonPhases.findYearIn doc, 1999    
+      
+      assert_equal 2015, (MoonPhases.getNASAYearBlob 2015).content[/\d+/].to_i
+      assert_equal 9, (MoonPhases.getNASAYearBlob 9).content[/\d+/].to_i
+      assert_equal 567, (MoonPhases.getNASAYearBlob 567).content[/\d+/].to_i
+      assert_equal 1620, (MoonPhases.getNASAYearBlob 1620).content[/\d+/].to_i
+      
   end
 end

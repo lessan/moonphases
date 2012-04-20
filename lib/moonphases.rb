@@ -2,6 +2,28 @@ require 'nokogiri'
 require 'open-uri'
 
 class MoonPhases
+  def self.getNASAYearBlob( year )
+    doc = getNASADoc year
+    if !doc.nil?
+      return findYearIn doc, year
+    end
+    nil
+  end
+  
+  def self.findYearIn( nasaDoc, year )
+    nasaDoc.css( 'pre.indent' ).each do |pre|
+      pre.children.each do |child|
+        firstNumber = child.content[/\d+/]
+        if !firstNumber.nil?
+          if firstNumber.to_i == year
+            return child
+          end
+        end
+      end
+    end
+    nil
+  end
+  
   def self.getNASADoc( year )
     Nokogiri::HTML( open( lookupURL( year )))
   end
