@@ -28,6 +28,40 @@ class MoonPhases
     MoonData.new separateNASADataLines( year )
   end
   
+  def getPreviousDataPoint( date )
+    yearToCheck = date.year
+    while !(yearData = getNASAData yearToCheck ).nil?
+      index = yearData.getNumDataPoints-1
+    
+      while index >= 0
+        testDate = yearData.getDataPoint index
+       if testDate <= date
+         return testDate
+       end
+       index = index-1
+     end
+     yearToCheck = yearToCheck-1    
+    end
+    nil
+  end
+  
+  def getNextDataPoint( date )
+    yearToCheck = date.year
+    while !(yearData = getNASAData yearToCheck ).nil?
+      index = 0
+    
+      while index < yearData.getNumDataPoints
+        testDate = yearData.getDataPoint index
+       if( testDate >= date )
+         return testDate
+       end
+       index = index+1
+      end
+      yearToCheck = yearToCheck+1
+    end
+    nil
+  end
+  
   def separateNASADataLines( year )
     dataLines = Array.new
     # Remove blank lines and stupid OSX return characters.

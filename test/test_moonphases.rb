@@ -304,6 +304,33 @@ class MoonPhasesTest < Test::Unit::TestCase
 
   end
   
+  def test_find_surrounding_data
+    moon = MoonPhases.new
+    testDate = Date.new 2011, 5, 5
+    
+    dateBefore = moon.getPreviousDataPoint testDate    
+    assert_equal 5, dateBefore.mon
+    assert_equal 3, dateBefore.mday
+    assert_equal 2011, dateBefore.year
+    
+    dateAfter = moon.getNextDataPoint testDate
+    assert_equal 5, dateAfter.mon
+    assert_equal 10, dateAfter.mday
+    assert_equal 2011, dateAfter.year
+    
+    testDate = Date.new 2001, 1, 1
+    dateBefore = moon.getPreviousDataPoint testDate
+    assert_equal 12, dateBefore.mon
+    assert_equal 25, dateBefore.mday
+    assert_equal 2000, dateBefore.year
+    
+    testDate = Date.new 2000, 12, 26
+    dateAfter = moon.getNextDataPoint testDate
+    assert_equal 1, dateAfter.mon
+    assert_equal 2, dateAfter.mday
+    assert_equal 2001, dateAfter.year
+  end  
+  
   
   def test_document_log
     moon = MoonPhases.new
