@@ -3,87 +3,106 @@ require 'moonphases'
 require 'date'
 
 class MoonPhasesTest < Test::Unit::TestCase
+  
   def test_AD_Years
-    moon = MoonPhases.new
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0001.html", moon.lookupURL( 1 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0001.html", moon.lookupURL( 100 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0101.html", moon.lookupURL( 101 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0101.html", moon.lookupURL( 200 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0201.html", moon.lookupURL( 201 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0201.html", moon.lookupURL( 300 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0301.html", moon.lookupURL( 301 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0901.html", moon.lookupURL( 1000 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases1001.html", moon.lookupURL( 1001 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases2001.html", moon.lookupURL( 2012 )
+    if !(defined? @moon)
+      @moon = MoonPhases.new
+    end
+
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0001.html", @moon.lookupURL( 1 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0001.html", @moon.lookupURL( 100 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0101.html", @moon.lookupURL( 101 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0101.html", @moon.lookupURL( 200 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0201.html", @moon.lookupURL( 201 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0201.html", @moon.lookupURL( 300 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0301.html", @moon.lookupURL( 301 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0901.html", @moon.lookupURL( 1000 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases1001.html", @moon.lookupURL( 1001 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases2001.html", @moon.lookupURL( 2012 )
   end
 
   def test_BC_Years
-    moon = MoonPhases.new
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0099.html", moon.lookupURL( 0 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0099.html", moon.lookupURL( -1 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0099.html", moon.lookupURL( -99 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0199.html", moon.lookupURL( -100 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0199.html", moon.lookupURL( -199 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0299.html", moon.lookupURL( -200 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0999.html", moon.lookupURL( -900 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0999.html", moon.lookupURL( -999 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-1099.html", moon.lookupURL( -1000 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-1099.html", moon.lookupURL( -1099 )
+    if !(defined? @moon)
+      @moon = MoonPhases.new
+    end
+
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0099.html", @moon.lookupURL( 0 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0099.html", @moon.lookupURL( -1 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0099.html", @moon.lookupURL( -99 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0199.html", @moon.lookupURL( -100 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0199.html", @moon.lookupURL( -199 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0299.html", @moon.lookupURL( -200 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0999.html", @moon.lookupURL( -900 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0999.html", @moon.lookupURL( -999 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-1099.html", @moon.lookupURL( -1000 )
+    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-1099.html", @moon.lookupURL( -1099 )
   end
   
   def test_padding
-    moon = MoonPhases.new
-    assert_equal "0001", moon.paddedString( 1 )
-    assert_equal "0010", moon.paddedString( 10 )
-    assert_equal "0100", moon.paddedString( 100 )
-    assert_equal "1000", moon.paddedString( 1000 )
+    if !(defined? @moon)
+      @moon = MoonPhases.new
+    end
+
+    assert_equal "0001", @moon.paddedString( 1 )
+    assert_equal "0010", @moon.paddedString( 10 )
+    assert_equal "0100", @moon.paddedString( 100 )
+    assert_equal "1000", @moon.paddedString( 1000 )
   end
   
   def test_get_data
-    moon = MoonPhases.new
+    if !(defined? @moon)
+      @moon = MoonPhases.new
+    end
+
     assert_raise OpenURI::HTTPError do
-      moon.getNASADoc( 50000 )
+      @moon.getNASADoc( 50000 )
     end
     
     assert_nothing_raised OpenURI::HTTPError do
-      doc = moon.getNASADoc 2012
+      doc = @moon.getNASADoc 2012
       assert_equal "NASA - Moon Phases:  2001 to  2100", doc.title
     end
   end
   
   def test_find_year_blobs
-    moon = MoonPhases.new
-      doc = moon.getNASADoc 2012
-      assert_not_nil moon.findYearIn doc, 2012
-      assert_nil moon.findYearIn doc, 1999    
+    if !(defined? @moon)
+      @moon = MoonPhases.new
+    end
+
+      doc = @moon.getNASADoc 2012
+      assert_not_nil @moon.findYearIn doc, 2012
+      assert_nil @moon.findYearIn doc, 1999    
 
       # Some AD Years      
-      assert_equal 2015, (moon.getNASAYearBlob 2015).content[/-?\d+/].to_i
-      assert_equal 9, (moon.getNASAYearBlob 9).content[/-?\d+/].to_i
-      assert_equal 567, (moon.getNASAYearBlob 567).content[/-?\d+/].to_i
-      assert_equal 1620, (moon.getNASAYearBlob 1620).content[/-?\d+/].to_i
+      assert_equal 2015, (@moon.getNASAYearBlob 2015).content[/-?\d+/].to_i
+      assert_equal 9, (@moon.getNASAYearBlob 9).content[/-?\d+/].to_i
+      assert_equal 567, (@moon.getNASAYearBlob 567).content[/-?\d+/].to_i
+      assert_equal 1620, (@moon.getNASAYearBlob 1620).content[/-?\d+/].to_i
       
       # OOH!  Year 0!
-      assert_equal 0, (moon.getNASAYearBlob 0).content[/-?\d+/].to_i
+      assert_equal 0, (@moon.getNASAYearBlob 0).content[/-?\d+/].to_i
       
       # How about some BC Years?
-      assert_equal -1, (moon.getNASAYearBlob -1).content[/-?\d+/].to_i
-      assert_equal -980, (moon.getNASAYearBlob -980).content[/-?\d+/].to_i
-      assert_equal -38, (moon.getNASAYearBlob -38).content[/-?\d+/].to_i
+      assert_equal -1, (@moon.getNASAYearBlob -1).content[/-?\d+/].to_i
+      assert_equal -980, (@moon.getNASAYearBlob -980).content[/-?\d+/].to_i
+      assert_equal -38, (@moon.getNASAYearBlob -38).content[/-?\d+/].to_i
       
       # These are the earliest and latest years for which NASA publishes data.
-      assert_equal -1999, (moon.getNASAYearBlob -1999).content[/-?\d+/].to_i
-      assert_equal 4000, (moon.getNASAYearBlob 4000).content[/-?\d+/].to_i
+      assert_equal -1999, (@moon.getNASAYearBlob -1999).content[/-?\d+/].to_i
+      assert_equal 4000, (@moon.getNASAYearBlob 4000).content[/-?\d+/].to_i
 
   end
   
   def test_parse_blob_data
-    moon = MoonPhases.new
-    assert_equal 2002, (moon.getNASAYearBlob 2002).content[/-?\d+/].to_i
-    assert_equal 13, (moon.separateNASADataLines 2002).length
+    if !(defined? @moon)
+      @moon = MoonPhases.new
+    end
+
+    assert_equal 2002, (@moon.getNASAYearBlob 2002).content[/-?\d+/].to_i
+    assert_equal 13, (@moon.separateNASADataLines 2002).length
     
     #Now let's see if we're actually parsing good data.
-    moonData = moon.getNASAData( 2002 )
+    moonData = @moon.getNASAData( 2002 )
     assert_equal 49, moonData.getNumDataPoints
     assert_equal 2002, moonData.getYear
     
@@ -305,27 +324,30 @@ class MoonPhasesTest < Test::Unit::TestCase
   end
   
   def test_find_surrounding_data
-    moon = MoonPhases.new
+    if !(defined? @moon)
+      @moon = MoonPhases.new
+    end
+
     testDate = Date.new 2011, 5, 5
     
-    dateBefore = moon.getPreviousDataPoint testDate    
+    dateBefore = @moon.getPreviousDataPoint testDate    
     assert_equal 5, dateBefore.mon
     assert_equal 3, dateBefore.mday
     assert_equal 2011, dateBefore.year
     
-    dateAfter = moon.getNextDataPoint testDate
+    dateAfter = @moon.getNextDataPoint testDate
     assert_equal 5, dateAfter.mon
     assert_equal 10, dateAfter.mday
     assert_equal 2011, dateAfter.year
     
     testDate = Date.new 2001, 1, 1
-    dateBefore = moon.getPreviousDataPoint testDate
+    dateBefore = @moon.getPreviousDataPoint testDate
     assert_equal 12, dateBefore.mon
     assert_equal 25, dateBefore.mday
     assert_equal 2000, dateBefore.year
     
     testDate = Date.new 2000, 12, 26
-    dateAfter = moon.getNextDataPoint testDate
+    dateAfter = @moon.getNextDataPoint testDate
     assert_equal 1, dateAfter.mon
     assert_equal 2, dateAfter.mday
     assert_equal 2001, dateAfter.year
