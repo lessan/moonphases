@@ -20,6 +20,20 @@ class MoonPhases
     nil
   end
   
+  def getMoonFullness( date )
+    pDataPoint = getPreviousDataPoint date
+    if pDataPoint.getDate == date 
+      return pDataPoint.getFullness
+    end
+
+    nDataPoint = getNextDataPoint date
+    daysBetweenDataPoints = nDataPoint.getDate.ajd - pDataPoint.getDate.ajd
+    daysSincePreviousDataPoint = date.ajd - pDataPoint.getDate.ajd
+     
+    phaseChange = (nDataPoint.getFullness.getPercent - pDataPoint.getFullness.getPercent) * ( daysSincePreviousDataPoint / daysBetweenDataPoints ) 
+    Fullness.new pDataPoint.getFullness.getPercent + phaseChange, phaseChange > 0 ? "+" : "-"
+  end
+  
   def getDocumentLogLength
     @documentLog.length
   end
@@ -35,7 +49,7 @@ class MoonPhases
     
       while index >= 0
         testDate = yearData.getDataPoint index
-       if testDate <= date
+       if testDate.getDate <= date
          return testDate
        end
        index = index-1
@@ -52,7 +66,7 @@ class MoonPhases
     
       while index < yearData.getNumDataPoints
         testDate = yearData.getDataPoint index
-       if( testDate >= date )
+       if( testDate.getDate >= date )
          return testDate
        end
        index = index+1
