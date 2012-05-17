@@ -1,6 +1,7 @@
 require 'test/unit'
 require 'moonphases'
 require 'date'
+require 'pathname'
 
 class MoonPhasesTest < Test::Unit::TestCase
   
@@ -9,16 +10,18 @@ class MoonPhasesTest < Test::Unit::TestCase
       @moon = MoonPhases.new
     end
 
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0001.html", @moon.lookupURL( 1 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0001.html", @moon.lookupURL( 100 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0101.html", @moon.lookupURL( 101 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0101.html", @moon.lookupURL( 200 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0201.html", @moon.lookupURL( 201 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0201.html", @moon.lookupURL( 300 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0301.html", @moon.lookupURL( 301 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases0901.html", @moon.lookupURL( 1000 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases1001.html", @moon.lookupURL( 1001 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases2001.html", @moon.lookupURL( 2012 )
+    resource_root = File.join(File.dirname(File.expand_path(__FILE__)), '../lib/moonphases/db' )
+
+    assert_equal Pathname.new( resource_root + "/phases0001.html" ).realpath, Pathname.new( @moon.lookupFilename( 1 ) ).realpath
+    assert_equal Pathname.new( resource_root + "/phases0001.html" ).realpath, Pathname.new( @moon.lookupFilename( 100 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases0101.html" ).realpath, Pathname.new( @moon.lookupFilename( 101 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases0101.html" ).realpath, Pathname.new( @moon.lookupFilename( 200 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases0201.html" ).realpath, Pathname.new( @moon.lookupFilename( 201 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases0201.html" ).realpath, Pathname.new( @moon.lookupFilename( 300 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases0301.html" ).realpath, Pathname.new( @moon.lookupFilename( 301 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases0901.html" ).realpath, Pathname.new( @moon.lookupFilename( 1000 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases1001.html" ).realpath, Pathname.new( @moon.lookupFilename( 1001 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases2001.html" ).realpath, Pathname.new( @moon.lookupFilename( 2012 )).realpath
   end
 
   def test_BC_Years
@@ -26,16 +29,18 @@ class MoonPhasesTest < Test::Unit::TestCase
       @moon = MoonPhases.new
     end
 
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0099.html", @moon.lookupURL( 0 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0099.html", @moon.lookupURL( -1 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0099.html", @moon.lookupURL( -99 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0199.html", @moon.lookupURL( -100 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0199.html", @moon.lookupURL( -199 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0299.html", @moon.lookupURL( -200 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0999.html", @moon.lookupURL( -900 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-0999.html", @moon.lookupURL( -999 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-1099.html", @moon.lookupURL( -1000 )
-    assert_equal "http://eclipse.gsfc.nasa.gov/phase/phases-1099.html", @moon.lookupURL( -1099 )
+    resource_root = File.join(File.dirname(File.expand_path(__FILE__)), '../lib/moonphases/db' )
+
+    assert_equal Pathname.new( resource_root + "/phases-0099.html" ).realpath, Pathname.new( @moon.lookupFilename( 0 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases-0099.html" ).realpath, Pathname.new( @moon.lookupFilename( -1 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases-0099.html" ).realpath, Pathname.new( @moon.lookupFilename( -99 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases-0199.html" ).realpath, Pathname.new( @moon.lookupFilename( -100 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases-0199.html" ).realpath, Pathname.new( @moon.lookupFilename( -199 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases-0299.html" ).realpath, Pathname.new( @moon.lookupFilename( -200 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases-0999.html" ).realpath, Pathname.new( @moon.lookupFilename( -900 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases-0999.html" ).realpath, Pathname.new( @moon.lookupFilename( -999 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases-1099.html" ).realpath, Pathname.new( @moon.lookupFilename( -1000 )).realpath
+    assert_equal Pathname.new( resource_root + "/phases-1099.html" ).realpath, Pathname.new( @moon.lookupFilename( -1099 )).realpath
   end
   
   def test_padding
@@ -54,11 +59,11 @@ class MoonPhasesTest < Test::Unit::TestCase
       @moon = MoonPhases.new
     end
 
-    assert_raise OpenURI::HTTPError do
+    assert_raise Errno::ENOENT do
       @moon.getNASADoc( 50000 )
     end
     
-    assert_nothing_raised OpenURI::HTTPError do
+    assert_nothing_raised Errno::ENOENT do
       doc = @moon.getNASADoc 2012
       assert_equal "NASA - Moon Phases:  2001 to  2100", doc.title
     end
@@ -409,8 +414,8 @@ class MoonPhasesTest < Test::Unit::TestCase
     assert_not_nil assert_equal 2, moon.getDocumentLogLength
 
     #Make sure that the log contains what we think it should.    
-    assert_equal moon.lookupURL( 2011 ), moon.getDocumentLogItem( 1 )
-    assert_equal moon.lookupURL( 1977 ), moon.getDocumentLogItem( 0 )
+    assert_equal moon.lookupFilename( 2011 ), moon.getDocumentLogItem( 1 )
+    assert_equal moon.lookupFilename( 1977 ), moon.getDocumentLogItem( 0 )
     
     # Get a blob we've gotten before, and make sure that
     # the log DOESN'T grow (because we went to the cache).

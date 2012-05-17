@@ -108,18 +108,18 @@ class MoonPhases
   end
   
   def getNASADoc( year )
-    url = lookupURL( year )
-    document = @documentCache[ url ]
+    filename = lookupFilename( year )
+    document = @documentCache[ filename ]
     if document.nil?
-      @documentLog << url
-      document = Nokogiri::HTML( open( url ))
-      @documentCache[ url ] = document  
+      @documentLog << filename
+      document = Nokogiri::HTML( File.open( filename ))
+      @documentCache[ filename ] = document  
     end
     document
   end
   
-  def lookupURL( year )
-    "http://eclipse.gsfc.nasa.gov/phase/phases" + paddedString( (( year - 1 )/ 100 ) * 100 + 1 ) + ".html"
+  def lookupFilename( year )
+    File.join(File.dirname(File.expand_path(__FILE__)), 'moonphases/db/phases' + paddedString( (( year - 1 )/ 100 ) * 100 + 1 ) + ".html" )
   end
   
   def paddedString( value )
