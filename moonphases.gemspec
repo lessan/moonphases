@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'moonphases'
-  s.version     = '1.0.2'
+  s.version     = '1.0.3'
   s.summary     = "MoonPhases-#{s.version}"
   s.description = "Recovers the phase of the moon for various historical dates."
   s.authors     = ["Curtis Lacy"]
