@@ -75,7 +75,15 @@ class MoonPhases
     end
     nil
   end
-  
+ 
+  def getNextMoonByPercent( date, percent )
+    dataPoint = getNextDataPoint(date)
+    if (dataPoint.getFullness.getPercent == percent)
+      return dataPoint
+    end
+    return getNextMoonByPercent(dataPoint.getDate + 1, percent)
+  end
+ 
   def separateNASADataLines( year )
     dataLines = Array.new
     # Remove blank lines and stupid OSX return characters.
