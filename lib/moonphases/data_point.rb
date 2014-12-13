@@ -1,13 +1,18 @@
 require 'date'
 
 class DataPoint
-  def initialize( date, fullness )
+  def initialize( date, time, fullness )
     @date = date
+    @time = time
     @fullness = fullness
   end
   
   def getDate
     @date
+  end
+
+  def getTime
+    @time
   end
   
   def getFullness

@@ -12,7 +12,7 @@ class MoonData
     # Parse out all the dates
     nasaDataLines.each do |dataLine|
       dataLine.scan( /([A-Za-z]{3}\s+\d+\s+\d+:\d+\s+)/ ).each do |date|
-        @dataPoints << DataPoint.new( parseDate( date[0] ), moonFullness )
+        @dataPoints << DataPoint.new( parseDate( date[0] ), parseTime( date[0] ),  moonFullness )
         moonFullness = nextMoonFullness moonFullness
       end
     end
@@ -57,6 +57,15 @@ class MoonData
     Date.new( @year, getMonth( parsed[0][0] ), parsed[0][1].to_i )
   end
   
+  def parseTime( dateString )
+    parsed = dateString.scan(/([A-Za-z]{3})\s+(\d+)\s+(\d+):(\d+)/)
+    month = getMonth(parsed[0][0])
+    day = parsed[0][1].to_i
+    hour = parsed[0][2].to_i
+    min = parsed[0][3].to_i
+    Time.utc(@year, month, day, hour, min)
+  end
+
   def getMonth( monthString )
     lowerCase = monthString.downcase
     if "jan".eql? lowerCase
